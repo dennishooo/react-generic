@@ -18,6 +18,12 @@ export type Movie = {
   releaseDate: string; // only movies have it
 };
 
+export type Phone = {
+  id: string;
+  brand: string;
+  price: number; // only movies have it
+};
+
 type SelectOption = {
   value: string;
   label: string;
@@ -44,7 +50,7 @@ function getStringFromValue<TValue extends Base>(value: TValue) {
   return value.id;
 }
 
-export type DataType = Book | Movie | string | Base;
+export type DataType = Book | Movie | Phone | string | Base;
 
 function isBook(value: DataType): value is Book {
   return typeof value !== "string" && "id" in value && "author" in value;
@@ -54,9 +60,15 @@ function isMovie(value: DataType): value is Movie {
   return typeof value !== "string" && "id" in value && "releaseDate" in value;
 }
 
+function isBrand(value: DataType): value is Phone {
+  return typeof value !== "string" && "id" in value && "brand" in value;
+}
+
 function formatLabel(value: DataType) {
   if (isBook(value)) return value.author;
   if (isMovie(value)) return value.releaseDate;
+  if (isBrand(value)) return value.brand;
+
   return value;
 }
 
