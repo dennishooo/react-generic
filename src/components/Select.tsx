@@ -50,7 +50,7 @@ function getStringFromValue<TValue extends Base>(value: TValue) {
   return value.id;
 }
 
-export type DataType = Book | Movie | Phone | string | Base;
+export type DataType = Book | Movie | Phone | string;
 
 function isBook(value: DataType): value is Book {
   return typeof value !== "string" && "id" in value && "author" in value;
@@ -64,12 +64,16 @@ function isBrand(value: DataType): value is Phone {
   return typeof value !== "string" && "id" in value && "brand" in value;
 }
 
+function valueShoudBeString(value: string): string {
+  return value;
+}
 function formatLabel(value: DataType) {
   if (isBook(value)) return value.author;
   if (isMovie(value)) return value.releaseDate;
   if (isBrand(value)) return value.brand;
 
-  return value;
+  //exhaustiveness checking
+  return valueShoudBeString(value);
 }
 
 export function Select<TValue extends Base>({

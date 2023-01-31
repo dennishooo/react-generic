@@ -3,10 +3,19 @@ import { Book, Movie, Phone, Select } from "../components/Select";
 
 //const assertion
 // turn into read-only of these specific values
-const tabs = ["Books", "Movies", "Laptops", "Phones"] as const;
+// const tabs = ["Books", "Movies", "Laptops", "Phones"] as const;
 
-type Tabs = typeof tabs;
-type Tab = Tabs[number];
+// type Tabs = typeof tabs;
+// type Tab = Tabs[number];
+
+// enums implementation
+
+enum Tabs {
+  "BOOKS" = "Books",
+  "MOVIES" = "Movies",
+  "LAPTOPS" = "Laptops",
+  "PHONES" = "Phones",
+}
 
 const bookOptions: Book[] = [{ id: "1", title: "fml", author: "alex" }];
 const movieOptions: Movie[] = [
@@ -27,9 +36,9 @@ const confirmImpossibleState = (tab: never) => {
   throw new Error(`reaching an impossible state becase of ${tab}`);
 };
 
-const getSelect = (tab: Tab) => {
+const getSelect = (tab: Tabs) => {
   switch (tab) {
-    case "Books":
+    case Tabs.BOOKS:
       return (
         <Select<Book>
           values={bookOptions}
@@ -37,7 +46,7 @@ const getSelect = (tab: Tab) => {
         />
       );
 
-    case "Movies":
+    case Tabs.MOVIES:
       return (
         <Select
           values={movieOptions}
@@ -45,14 +54,14 @@ const getSelect = (tab: Tab) => {
         />
       );
 
-    case "Laptops":
+    case Tabs.LAPTOPS:
       return (
         <Select
           values={movieOptions}
           onChange={(movie) => doSomethingWithMovies(movie)}
         />
       );
-    case "Phones":
+    case Tabs.PHONES:
       return (
         <Select
           values={phoneOptions}
@@ -66,13 +75,13 @@ const getSelect = (tab: Tab) => {
 };
 
 export default function SelectMenu() {
-  const [tab, setTab] = useState<Tab>(tabs[0]);
+  const [tab, setTab] = useState<Tabs>(Tabs.BOOKS);
 
   const select = getSelect(tab);
   return (
     <>
-      <Select<Tab>
-        values={tabs}
+      <Select<Tabs>
+        values={Object.values(Tabs)}
         onChange={(val) => {
           setTab(val);
         }}
